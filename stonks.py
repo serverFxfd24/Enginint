@@ -1,3 +1,4 @@
+# Анализ изменений цены акций (не используется)
 import pandas as pd
 from datetime import datetime, timedelta
 
