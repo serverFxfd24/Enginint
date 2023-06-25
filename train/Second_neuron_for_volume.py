@@ -58,8 +58,8 @@ n_prediction = 1  # Каждое предсказание делается че�
 # Инициализация DQN агента
 agent = DQNAgent(state_size, action_size)
 
-df = pd.read_excel('/content/train.xlsx')
-df_t =  pd.read_excel('/content/test.xlsx')
+df = pd.read_excel('/content/Enginint/sample_data/train.xlsx')
+df_t =  pd.read_excel('/content/Enginint/sample_data/test.xlsx')
 train_data = df['Цена на арматуру']
 test_data = df_t['Цена на арматуру'] # Тестовый датасет
 
