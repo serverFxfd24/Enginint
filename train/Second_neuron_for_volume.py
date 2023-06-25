@@ -46,7 +46,7 @@ class DQNAgent:
                 target = (reward + self.gamma * np.amax(self.model.predict(next_state)[0]))
             target_f = self.model.predict(state)
             target_f[0][action-1] = target
-            self.model.fit(state, target_f, epochs=20, verbose=2)
+            self.model.fit(state, target_f, epochs=60, verbose=0)
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay
 
@@ -59,16 +59,13 @@ n_prediction = 1  # Каждое предсказание делается че�
 agent = DQNAgent(state_size, action_size)
 
 df = pd.read_excel('/content/Enginint/sample_data/train.xlsx')
-df_t =  pd.read_excel('/content/Enginint/sample_data/test.xlsx')
 train_data = df['Цена на арматуру']
-test_data = df_t['Цена на арматуру'] # Тестовый датасет
 
 # Создаем экземпляр MinMaxScaler
 scaler = MinMaxScaler()
-
 # Нормализуем данные из двух столбцов
 train_data = scaler.fit_transform(df[['Цена на арматуру']])
-test_data = scaler.fit_transform(df_t[['Цена на арматуру']])
+
 
 batch_size = 2
 # Обучение DQN агента
@@ -85,11 +82,4 @@ for i in range(len(train_data) - n_prediction):
     if len(agent.memory) > batch_size:
         agent.replay(batch_size)
 
-# Предсказание объема на тестовом датасете
-predictions = []
-for i in range(len(test_data) - n_prediction + 1):
-    state = np.array([test_data[i]])
-    action = agent.act(state)
-    predictions.append(action)
-
-print(predictions)  # Предсказанные объемы закупки на тестовом датасете
+agent.model.save('/content/Enginint/Other/model100epbet.h5')
